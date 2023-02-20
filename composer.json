@@ -1,0 +1,20 @@
+{
+    "name": "iolk/pagination-fsp-plugin",
+    "description": "Filtering, sorting and populate plugin for Laravel Pagination",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Iolk\\PaginationFspPlugin\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Alessandro Lodi",
+            "email": "alelod96@gmail.com"
+        }
+    ],
+    "require": {}
+}
