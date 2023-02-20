@@ -6,28 +6,17 @@ use Exception;
 use Nette\SmartObject;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Schema;
+use Iolk\PaginationFspPlugin\Helpers\ModelHelper;
 
-class FilterApplier
+class ModelFiltersHandler
 {
     use SmartObject;
 
-    private $modelInstance = null;
-    private $modelAttributes = [];
-    private $modelRelations = [];
-
     public function __construct(protected string $modelClass)
     {
-        if (!in_array('Illuminate\Database\Eloquent\Model', class_parents($this->modelClass))) {
-            throw new Exception('Filters can be applied only on Illuminate\Database\Eloquent\Model');
-        }
-
-        $this->modelInstance = new ($this->modelClass)();
-        $this->modelAttributes = Schema::getColumnListing($this->modelInstance->getTable());
-        $this->modelRelations = $this->modelInstance->getFilterableRelations();
     }
 
-    public function processFilters(Builder $builder, array $whereClauses)
+    public function handle(Builder $builder, array $whereClauses)
     {
         foreach ($whereClauses as $whereKey => $whereValue) {
             if ($whereKey === '$or') {
@@ -46,23 +35,23 @@ class FilterApplier
                     );
                 }
                 $builder->whereNot(function ($q) use ($whereValue) {
-                    $this->processFilters($q, $whereValue);
+                    $this->handle($q, $whereValue);
                 });
                 continue;
             }
 
-            if (FilterOperator::isOperator($whereKey)) {
+            if (FilterOperatorHandler::isOperator($whereKey)) {
                 throw new Exception(
                     "Only \$and, \$or and \$not can only be used as root level operators. Found $whereKey."
                 );
             }
 
-            if ($this->isAttribute($whereKey)) {
+            if (ModelHelper::isAttribute($this->modelClass, $whereKey)) {
                 $this->processAttributeFilter($builder, $whereKey, $whereValue);
                 continue;
             }
 
-            if ($this->isRelation($whereKey)) {
+            if (ModelHelper::isFilterableRelation($this->modelClass, $whereKey)) {
                 $this->processRelationFilter($builder, $whereKey, $whereValue);
                 continue;
             }
@@ -79,15 +68,17 @@ class FilterApplier
             throw new Exception("Unprocessable filter for attribute '$attributeName'");
         }
 
-        $operator = new FilterOperator($keys[0]);
-        return $operator->applyFilter($builder, $attributeName, $filter[$keys[0]]);
+        $operator = new FilterOperatorHandler($keys[0]);
+        return $operator->handle($builder, $attributeName, $filter[$keys[0]]);
     }
 
     private function processRelationFilter(Builder $builder, string $relationName, array $whereClauses)
     {
         $builder->whereHas($relationName, function ($q) use ($relationName, $whereClauses) {
-            $relationApplier = new FilterApplier($this->getRelationClass($relationName));
-            $relationApplier->processFilters($q, $whereClauses);
+            $relationClass = ModelHelper::getRelationClass($this->modelClass, $relationName);
+
+            $relationApplier = new ModelFiltersHandler($relationClass);
+            $relationApplier->handle($q, $whereClauses);
         });
     }
 
@@ -96,24 +87,9 @@ class FilterApplier
         $builder->where(function ($q) use ($groupFnName, $groupWhereClauses) {
             foreach ($groupWhereClauses as $groupWhereClause) {
                 $q->{$groupFnName}(function ($q) use ($groupWhereClause) {
-                    $this->processFilters($q, $groupWhereClause);
+                    $this->handle($q, $groupWhereClause);
                 });
             }
         });
-    }
-
-    public function getRelationClass(string $relationName)
-    {
-        return get_class($this->modelInstance->{$relationName}()->getRelated());
-    }
-
-    private function isRelation(string $key)
-    {
-        return in_array($key, $this->modelRelations);
-    }
-
-    private function isAttribute(string $key)
-    {
-        return in_array($key, $this->modelAttributes);
     }
 }

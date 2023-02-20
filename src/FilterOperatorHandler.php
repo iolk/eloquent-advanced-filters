@@ -5,7 +5,7 @@ namespace Iolk\PaginationFspPlugin;
 use Exception;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 
-class FilterOperator
+class FilterOperatorHandler
 {
     public const GROUP_OPERATORS = ['$and', '$or'];
 
@@ -67,7 +67,7 @@ class FilterOperator
         return $this->operator;
     }
 
-    public function applyFilter(Builder $builder, string $attributeName, mixed $value): Builder
+    public function handle(Builder $builder, string $attributeName, mixed $value): Builder
     {
         $applyFn = OperatorBuilderFactory::make($this);
         return $applyFn($builder, $attributeName, $value);

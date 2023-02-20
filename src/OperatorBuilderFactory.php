@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class OperatorBuilderFactory
 {
-    public static function make(FilterOperator $operator): Closure
+    public static function make(FilterOperatorHandler $operator): Closure
     {
         $methodName = 'apply' . ucfirst($operator->getOperator()) . 'Operator';
         if (!method_exists(self::class, $methodName)) {
