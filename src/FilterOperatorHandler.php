@@ -1,6 +1,6 @@
 <?php
 
-namespace Iolk\PaginationFspPlugin;
+namespace Iolk\EloquentAdvancedFilters;
 
 use Exception;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -62,7 +62,7 @@ class FilterOperatorHandler
         $this->operator = substr($this->operator, 1);
     }
 
-    public function getOperator()
+    public function getOperator(): string
     {
         return $this->operator;
     }
@@ -73,22 +73,22 @@ class FilterOperatorHandler
         return $applyFn($builder, $attributeName, $value);
     }
 
-    public static function isOperator(string $key)
+    public static function isOperator(string $key): bool
     {
         return in_array($key, self::OPERATORS);
     }
 
-    public static function isGroupOperator(string $key)
+    public static function isGroupOperator(string $key): bool
     {
         return in_array($key, self::GROUP_OPERATORS);
     }
 
-    public static function isArrayOperator(string $key)
+    public static function isArrayOperator(string $key): bool
     {
         return in_array($key, self::ARRAY_OPERATORS);
     }
 
-    public static function isCastOperator(string $key)
+    public static function isCastOperator(string $key): bool
     {
         return in_array($key, self::CAST_OPERATORS);
     }

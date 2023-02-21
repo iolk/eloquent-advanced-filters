@@ -1,14 +1,11 @@
 {
-    "name": "iolk/pagination-fsp-plugin",
-    "description": "Filtering, sorting and populate plugin for Laravel Pagination",
+    "name": "iolk/eloquent-advanced-filters",
+    "description": "Filtering, sorting and populate",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Iolk\\PaginationFspPlugin\\": "src/"
-        },
-        "files": [
-            "src/helpers.php"
-        ]
+            "Iolk\\EloquentAdvancedFilters\\": "src/"
+        }
     },
     "authors": [
         {

@@ -1,17 +1,17 @@
 <?php
 
-namespace Iolk\PaginationFspPlugin\Helpers;
+namespace Iolk\EloquentAdvancedFilters\Utils;
 
 use Exception;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Illuminate\Support\Facades\Schema;
 
-class ModelHelper
+class Model
 {
-    public static function getModelInstance(string $className): Model
+    public static function getModelInstance(string $className): EloquentModel
     {
-        if (!in_array(Model::class, class_parents($className))) {
-            throw new Exception("Model helper called on non {${Model::class}} class: $className");
+        if (!in_array(EloquentModel::class, class_parents($className))) {
+            throw new Exception("Model helper called on non '".EloquentModel::class."' class: '$className'");
         }
         return new ($className)();
     }

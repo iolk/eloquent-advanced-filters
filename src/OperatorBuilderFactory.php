@@ -1,6 +1,6 @@
 <?php
 
-namespace Iolk\PaginationFspPlugin;
+namespace Iolk\EloquentAdvancedFilters;
 
 use Closure;
 use Exception;

@@ -1,12 +1,10 @@
 <?php
 
-namespace Iolk\PaginationFspPlugin;
+namespace Iolk\EloquentAdvancedFilters\Utils;
 
-use Illuminate\Database\Eloquent\Builder;
-use Iolk\PaginationFspPlugin\Helpers\ModelHelper;
 use Nette\SmartObject;
 
-class FspPaginator
+class Paginator
 {
     use SmartObject;
 

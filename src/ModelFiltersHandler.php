@@ -1,12 +1,12 @@
 <?php
 
-namespace Iolk\PaginationFspPlugin;
+namespace Iolk\EloquentAdvancedFilters;
 
 use Exception;
 use Nette\SmartObject;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Builder;
-use Iolk\PaginationFspPlugin\Helpers\ModelHelper;
+use Iolk\EloquentAdvancedFilters\Utils;
 
 class ModelFiltersHandler
 {
@@ -46,12 +46,12 @@ class ModelFiltersHandler
                 );
             }
 
-            if (ModelHelper::isAttribute($this->modelClass, $whereKey)) {
+            if (Utils\Model::isAttribute($this->modelClass, $whereKey)) {
                 $this->processAttributeFilter($builder, $whereKey, $whereValue);
                 continue;
             }
 
-            if (ModelHelper::isFilterableRelation($this->modelClass, $whereKey)) {
+            if (Utils\Model::isFilterableRelation($this->modelClass, $whereKey)) {
                 $this->processRelationFilter($builder, $whereKey, $whereValue);
                 continue;
             }
@@ -75,7 +75,7 @@ class ModelFiltersHandler
     private function processRelationFilter(Builder $builder, string $relationName, array $whereClauses)
     {
         $builder->whereHas($relationName, function ($q) use ($relationName, $whereClauses) {
-            $relationClass = ModelHelper::getRelationClass($this->modelClass, $relationName);
+            $relationClass = Utils\Model::getRelationClass($this->modelClass, $relationName);
 
             $relationApplier = new ModelFiltersHandler($relationClass);
             $relationApplier->handle($q, $whereClauses);
