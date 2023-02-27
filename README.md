@@ -78,7 +78,7 @@ The columns parameter allows you to select only specific columns to return in yo
 
 ```php
 [
-    "sort" => ["column1", "column2", ...]
+    "columns" => ["column1", "column2", ...]
 ]
 
 ```
