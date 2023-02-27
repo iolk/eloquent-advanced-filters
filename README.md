@@ -54,7 +54,7 @@ The request payload for this query would be:
 
 ## Parameters
 
- ### Sort
+### Sort
 
 The `sort` parameter allows you to sort your API response by one or multiple fields.
 ```php
