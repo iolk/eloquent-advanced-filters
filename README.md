@@ -56,7 +56,7 @@ The request payload for this query would be:
 
  ### Sort
 
-The sort parameter allows you to sort your API response by one or multiple fields.
+The `sort` parameter allows you to sort your API response by one or multiple fields.
 ```php
 // Single field sorting
 [
@@ -74,7 +74,7 @@ The sort parameter allows you to sort your API response by one or multiple field
 
 ### Columns
 
-The columns parameter allows you to select only specific columns to return in your API response. By default, all columns are selected. You can use it like this:
+The `columns` parameter allows you to select only specific columns to return in your API response. By default, all columns are selected. You can use it like this:
 
 ```php
 [
@@ -84,7 +84,8 @@ The columns parameter allows you to select only specific columns to return in yo
 ```
 
 ### Filters
-The filters parameter allows you to filter your API response based on specific conditions. You can use it like this:
+
+The `filters` parameter allows you to filter your API response based on specific conditions. You can use it like this:
 
 ```php
 [
