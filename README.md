@@ -1,7 +1,41 @@
 
-# Eloquent Advanced Filters
+# Eloquent Advanced Filters (WIP)
 
 Easily create REST APIs that conform to the [Microsoft API guidelines](https://github.com/microsoft/api-guidelines) using Eloquent. With this package, you can quickly filter, sort, and populate your API data using a variety of advanced filtering options.
+
+
+## Introduction
+
+Let's say that you want to show the users that have published some posts with at least 25 likes and you want to sort them by name. With Eloquent Advanced Filters you have it ready, just:
+
+```php
+public function list()
+{
+    return User::paginateWithFilters();
+}
+```
+
+And than you can make queries like
+
+```
+/users?filters[posts][likes][$gte]=25&sort=name
+```
+
+where your request payload is
+
+```php
+[
+    "filters" => [
+        "posts" => [
+            "likes" => [
+                "\$gte" => 25
+            ]
+        ]
+    ],
+    "sort" => "name"
+]
+```
+
 
 
 ## Installation
@@ -23,9 +57,12 @@ The following API parameters are available:
 | ------------------ | ---------------- | ------------------------------------------------- |
 | `sort`             | String or Array  | [Sort the response](#sorting)                     |
 | `filters`          | Object           | [Filter the response](#filtering)                 |
-| `populate`         | String or Object | [Populate relations](#population)                 |
 | `columns`          | Array            | [Select only specific columns](#field-selection)  |
-| `pagination`       | Object           | [Page through entries](#pagination)               |
+
+ - [] Pagination parameter
+ - [] Populate parameter
+<!-- | `pagination`       | Object           | [Page through entries](#pagination)               | -->
+<!-- | `populate`         | String or Object | [Populate relations](#population)                 | -->
 
 ### Sorting
 
@@ -72,7 +109,7 @@ The following operators are available:
 | `$and`          | Joins the filters in an "and" expression |
 | `$not`          | Joins the filters in an "not" expression |
 
-### Pagination
+<!-- ### Pagination
 
 Queries can accept `pagination` parameters. Results can be paginated:
 
@@ -100,9 +137,9 @@ To paginate results by offset, use the following parameters:
 | ----------------------- | ------- | -------------------------------------------------------------- | ------- |
 | `pagination[start]`     | Integer | Start value (i.e. first entry to return)                      | 0       |
 | `pagination[limit]`     | Integer | Number of entries to return                                    | 25      |
-| `pagination[withCount]` | Boolean | Toggles displaying the total number of entries to the response | `true`  |
+| `pagination[withCount]` | Boolean | Toggles displaying the total number of entries to the response | `true`  | -->
 
 
 ## License
 
-EloquentAdvancedFilters is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+Eloquent Advanced Filters is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
