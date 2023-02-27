@@ -1,6 +1,6 @@
 {
     "name": "iolk/eloquent-advanced-filters",
-    "description": "Filtering, sorting and populate",
+    "description": "Filtering, sorting and populate for Eloquent ORM",
     "license": "MIT",
     "autoload": {
         "psr-4": {
